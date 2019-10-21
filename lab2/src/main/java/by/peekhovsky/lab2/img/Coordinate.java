@@ -9,6 +9,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Coordinate {
-  private int x;
-  private int y;
+  private double x;
+  private double y;
 }

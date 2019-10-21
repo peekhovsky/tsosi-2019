@@ -1,5 +1,8 @@
-package by.peekhovsky.lab2.img;
+package by.peekhovsky.lab2.analyze;
 
+import by.peekhovsky.lab2.img.ColorfulPixel;
+import by.peekhovsky.lab2.img.VectorFigure;
+import by.peekhovsky.lab2.img.VectorFigureImpl;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,7 +64,7 @@ public class AnalyzedImage {
     initBinaryValues(this.rgbValues);
     initLabels();
     initFigures();
-    showRgb();
+    //showRgb();
     showBinary();
     showLabels();
   }
@@ -137,13 +140,13 @@ public class AnalyzedImage {
   }
 
   private void initFigures() {
-    Map<Integer, VectorFigure.ImageFigureBuilder> figureBuilders = new HashMap<>();
+    Map<Integer, VectorFigureImpl.ImageFigureBuilder> figureBuilders = new HashMap<>();
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         if (labelValues[x][y] != 0) {
-          VectorFigure.ImageFigureBuilder imageFigureBuilder = figureBuilders.get(labelValues[x][y]);
+          VectorFigureImpl.ImageFigureBuilder imageFigureBuilder = figureBuilders.get(labelValues[x][y]);
           if (imageFigureBuilder == null) {
-            imageFigureBuilder = VectorFigure.builder(width, height);
+            imageFigureBuilder = VectorFigureImpl.builder(width, height);
             figureBuilders.put(labelValues[x][y], imageFigureBuilder);
           }
           imageFigureBuilder.addPixel(x, y);
@@ -151,14 +154,20 @@ public class AnalyzedImage {
       }
     }
 
-    figureBuilders.forEach((key, figureBuilder) -> figures.put(key, figureBuilder.build()));
+    figureBuilders.forEach((key, figureBuilder) -> {
+      VectorFigure vectorFigure = figureBuilder.build();
+      if (vectorFigure.getElongation() != 0) {
+        figures.put(key, vectorFigure);
+      }
+    });
+
 
     figures.forEach((key, val) -> {
       System.out.println("\nFigure: " + key);
       System.out.println("Square: " + val.getSquare());
       System.out.println("Perimeter: " + val.getPerimeter());
       System.out.println("Compactness: " + val.getCompactness());
-      System.out.println("Center of mass: " + val.getCenterOfMass());
+      System.out.println("Elongation: " + val.getElongation());
     });
   }
 
