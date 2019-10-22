@@ -1,8 +1,6 @@
 package by.peekhovsky.lab2.analyze;
 
 import by.peekhovsky.lab2.img.RgbPixel;
-import by.peekhovsky.lab2.img.VectorFigure;
-import by.peekhovsky.lab2.img.VectorFigureImpl;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,25 +76,22 @@ public class AnalyzedImage {
   }
 
   private void initBinaryValues(RgbPixel[][] rgbValues) {
-    int medium = 0;
-    int counter = 0;
-
     binaryValues = new boolean[width][height];
+    int medium = 0;
 
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         RgbPixel rgb = rgbValues[x][y];
-        medium += rgb.getR() + rgb.getG() + rgb.getB();
-        counter++;
+        medium += (rgb.getR() + rgb.getG() + rgb.getB()) / 3;
       }
     }
-    medium /= counter;
+    medium /= height * width;
 
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         RgbPixel rgb = rgbValues[x][y];
-        int gray = rgb.getR() + rgb.getG() + rgb.getB();
-        binaryValues[x][y] = gray > medium * 2;
+        int gray = (rgb.getR() + rgb.getG() + rgb.getB()) / 3;
+        binaryValues[x][y] = gray > medium * 2.15;
       }
     }
   }
@@ -157,7 +152,9 @@ public class AnalyzedImage {
 
 
     figures.forEach((key, val) -> {
-      System.out.println("\nFigure: " + key);
+      System.out.println();
+      log.info("Figure: ");
+      System.out.println("Key: " + key);
       System.out.println("Square: " + val.getSquare());
       System.out.println("Perimeter: " + val.getPerimeter());
       System.out.println("Compactness: " + val.getCompactness());

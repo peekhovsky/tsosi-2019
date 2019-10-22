@@ -1,4 +1,4 @@
-package by.peekhovsky.lab2.img;
+package by.peekhovsky.lab2.analyze;
 
 /**
  * @author Rastsislau Piakhouski 2019

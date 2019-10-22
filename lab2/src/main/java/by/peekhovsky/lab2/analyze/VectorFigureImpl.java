@@ -1,5 +1,6 @@
-package by.peekhovsky.lab2.img;
+package by.peekhovsky.lab2.analyze;
 
+import by.peekhovsky.lab2.img.Coordinate;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -133,14 +134,10 @@ public class VectorFigureImpl implements VectorFigure {
     double m02 = calcCentralMoment(0, 2, centerOfMass);
     double m11 = calcCentralMoment(1, 1, centerOfMass);
     double sqrt = Math.sqrt((Math.pow((m20 - m02), 2) + 4 * Math.pow(m11, 2)));
-    System.out.println("figure: ");
-    System.out.println("M20: " + m20 + ", MO2: " + m02 + ", M11: " + m11 + ", sqrt: " + sqrt);
     double el = (m20 + m02 + sqrt) / (m20 + m02 - sqrt);
     if (Double.isInfinite(el) || Double.isNaN(el)) {
       el = 0;
-      System.out.println("00000");
     }
-    System.out.println("elongation: " + el);
     return el;
   }
 

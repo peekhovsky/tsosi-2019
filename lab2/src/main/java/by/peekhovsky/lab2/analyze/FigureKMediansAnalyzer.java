@@ -1,7 +1,7 @@
 package by.peekhovsky.lab2.analyze;
 
-import by.peekhovsky.lab2.img.VectorFigure;
-import by.peekhovsky.lab2.img.VectorFigureImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,20 +16,30 @@ import java.util.Set;
  */
 public class FigureKMediansAnalyzer {
 
+  private static final Logger log = LoggerFactory.getLogger(FigureKMediansAnalyzer.class);
+
   private final Random random;
 
-  public FigureKMediansAnalyzer(Random random) {
+  private final double minClusterDistance;
+  private final double distanceSubtrahend;
+
+  public FigureKMediansAnalyzer(double minClusterDistance, double distanceSubtrahend) {
+    this(new Random(), minClusterDistance, distanceSubtrahend);
+  }
+
+  public FigureKMediansAnalyzer(Random random, double minClusterDistance, double distanceSubtrahend) {
+    this.minClusterDistance = minClusterDistance;
     this.random = random;
+    this.distanceSubtrahend = distanceSubtrahend;
   }
 
   public Map<VectorFigure, Map<Integer, VectorFigure>> analyze(int numOfClusters, Map<Integer, VectorFigure> figures) {
     Map<VectorFigure, Map<Integer, VectorFigure>> clusters = new HashMap<>();
     setUpNewRandomCenters(numOfClusters, figures, clusters);
     addFiguresToClusters(figures, clusters);
-    showClusterFigures(clusters);
+    //showClusterFigures(clusters);
 
     while (true) {
-      //for (int i = 0; i < 5; i++) {
       var prevClusterCenters = clusters.keySet();
       clusters = recalculateCenters(clusters);
       var newClusterCenters = clusters.keySet();
@@ -42,44 +52,63 @@ public class FigureKMediansAnalyzer {
   }
 
 
-  private Map<VectorFigure, Map<Integer, VectorFigure>> setUpNewRandomCenters(
+  private void setUpNewRandomCenters(
       int numOfClusters,
       Map<Integer, VectorFigure> figures,
       Map<VectorFigure, Map<Integer, VectorFigure>> clusters) {
     var values = figures.entrySet().toArray(new Map.Entry[0]);
 
+    var attemptCounter = 0;
+    var dynamicMinClusterDistance = minClusterDistance;
+
     for (int i = 0; i < numOfClusters; i++) {
       while (true) {
+        @SuppressWarnings("unchecked")
         Map.Entry<Integer, VectorFigure> clusterCenterOfMassEntry = values[random.nextInt(values.length)];
+        boolean isAppropriate = true;
+
         if (clusters.get(clusterCenterOfMassEntry.getValue()) != null) {
           continue;
+
+        } else {
+          for (Map.Entry<VectorFigure, Map<Integer, VectorFigure>> cluster : clusters.entrySet()) {
+            log.info("DISTANCE: {}", cluster.getKey().distance(clusterCenterOfMassEntry.getValue()));
+            if (cluster.getKey().distance(clusterCenterOfMassEntry.getValue()) < dynamicMinClusterDistance) {
+              log.info("Distance is to small, trying again...");
+              isAppropriate = false;
+            }
+          }
         }
-        System.out.println("clusterCenterOfMassEntry");
-        System.out.println(clusterCenterOfMassEntry);
-        Map<Integer, VectorFigure> clusterVectors = new HashMap<>();
-        clusters.put(clusterCenterOfMassEntry.getValue(), clusterVectors);
+
+        if (!isAppropriate) {
+          attemptCounter++;
+          if (attemptCounter == clusters.size()) {
+            dynamicMinClusterDistance -= distanceSubtrahend;
+            attemptCounter = 0;
+          }
+          continue;
+        }
+
+        Map<Integer, VectorFigure> newFigures = new HashMap<>();
+        newFigures.put(clusterCenterOfMassEntry.getKey(), clusterCenterOfMassEntry.getValue());
+        clusters.put(clusterCenterOfMassEntry.getValue(), newFigures);
         break;
       }
     }
-    return clusters;
   }
-
-
-  /* public VectorFigure(double square, double perimeter, double compactness, double elongation, Coordinate centerOfMass) */
 
   private Map<VectorFigure, Map<Integer, VectorFigure>> recalculateCenters(Map<VectorFigure, Map<Integer, VectorFigure>> clusters) {
     Map<VectorFigure, Map<Integer, VectorFigure>> newClusters = new HashMap<>();
     System.out.println("\n\n");
     clusters.forEach((cluster, figures) -> {
-      System.out.println("cluster:");
+      log.info("Cluster: ");
       System.out.println(cluster);
-      System.out.println("figures: ");
+      log.info("Figures: ");
       System.out.println(figures);
+
       Map<Integer, VectorFigure> newFigures = new HashMap<>();
       VectorFigure clusterCenter = calcCenterOfMassOfVectors(figures.values());
-      // if (clusterCenter != null) {
       newClusters.put(clusterCenter, newFigures);
-      //}
     });
 
     return newClusters;
@@ -110,14 +139,11 @@ public class FigureKMediansAnalyzer {
     compactnesses.sort(Double::compareTo);
     elongations.sort(Double::compareTo);
 
-//    System.out.println("\ndata: ");
-//    System.out.println(squares);
-//    System.out.println(perimeters);
-//    System.out.println(compactnesses);
-//    System.out.println(elongations);
-
-    VectorFigureImpl newCenter = new VectorFigureImpl(squares.get(medianIndex), perimeters.get(medianIndex), compactnesses.get(medianIndex), elongations.get(medianIndex));
-    return newCenter;
+    return new VectorFigureImpl(
+        squares.get(medianIndex),
+        perimeters.get(medianIndex),
+        compactnesses.get(medianIndex),
+        elongations.get(medianIndex));
   }
 
 
@@ -130,9 +156,6 @@ public class FigureKMediansAnalyzer {
     }
 
     for (var i = 0; i < clusterCentersArray1.length; i++) {
-      System.out.println("\nclusterCentersArray");
-      System.out.println(clusterCentersArray1[i]);
-      System.out.println(clusterCentersArray2[i]);
       if (!clusterCentersArray1[i].equals(clusterCentersArray2[i])) {
         return false;
       }
@@ -141,7 +164,7 @@ public class FigureKMediansAnalyzer {
   }
 
 
-  private Map<VectorFigure, Map<Integer, VectorFigure>> addFiguresToClusters(
+  private void addFiguresToClusters(
       Map<Integer, VectorFigure> figures,
       final Map<VectorFigure, Map<Integer, VectorFigure>> clusters) {
 
@@ -161,19 +184,17 @@ public class FigureKMediansAnalyzer {
       }
       clusters.get(minClusterFigure).put(key, figure);
     });
-
-    return clusters;
   }
-
 
   private void showClusterFigures(Map<VectorFigure, Map<Integer, VectorFigure>> clusterFigures) {
     clusterFigures.forEach((cluster, figures) -> {
-//      System.out.println("Cluster: " + cluster);
-//      System.out.println("Figures: ");
+      log.info("Cluster: ");
+      System.out.println(cluster);
+      log.info("Figures: ");
       figures.forEach((key, figure) -> {
-//        System.out.println("Key: " + key);
-//        System.out.println("Figure: " + figure);
-//        System.out.println();
+        System.out.println("Key: " + key);
+        System.out.println("Figure: " + figure);
+        System.out.println();
       });
     });
   }
