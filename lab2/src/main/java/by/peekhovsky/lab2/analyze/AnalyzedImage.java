@@ -1,6 +1,6 @@
 package by.peekhovsky.lab2.analyze;
 
-import by.peekhovsky.lab2.img.ColorfulPixel;
+import by.peekhovsky.lab2.img.RgbPixel;
 import by.peekhovsky.lab2.img.VectorFigure;
 import by.peekhovsky.lab2.img.VectorFigureImpl;
 import lombok.Getter;
@@ -11,6 +11,10 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
+import static by.peekhovsky.lab2.filter.GrayFilter.BLUE_FACTOR;
+import static by.peekhovsky.lab2.filter.GrayFilter.GREEN_FACTOR;
+import static by.peekhovsky.lab2.filter.GrayFilter.RED_FACTOR;
+
 
 /**
  * @author Rastsislau Piakhouski 2019
@@ -19,10 +23,6 @@ public class AnalyzedImage {
 
   private static final Logger log = LoggerFactory.getLogger(AnalyzedImage.class);
 
-  private static final double RED_FACTOR = 0.3;
-  private static final double GREEN_FACTOR = 0.59;
-  private static final double BLUE_FACTOR = 0.11;
-
   @Getter
   private boolean[][] binaryValues;
 
@@ -30,7 +30,7 @@ public class AnalyzedImage {
   private int[][] labelValues;
 
   @Getter
-  private ColorfulPixel[][] rgbValues;
+  private RgbPixel[][] rgbValues;
 
   /**
    * Key - number of the figure.
@@ -39,15 +39,9 @@ public class AnalyzedImage {
   @Getter
   private Map<Integer, VectorFigure> figures = new HashMap<>();
 
-  /**
-   * Img width.
-   */
   @Getter
   private final int width;
 
-  /**
-   * Img height.
-   */
   @Getter
   private final int height;
 
@@ -70,7 +64,7 @@ public class AnalyzedImage {
   }
 
   private void initRgbValues(BufferedImage bufferedImage) {
-    rgbValues = new ColorfulPixel[width][height];
+    rgbValues = new RgbPixel[width][height];
 
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
@@ -78,12 +72,12 @@ public class AnalyzedImage {
         int r = (int) ((rgb >> 16 & 0xff) * RED_FACTOR);
         int g = (int) ((rgb >> 8 & 0xff) * GREEN_FACTOR);
         int b = (int) ((rgb & 0xff) * BLUE_FACTOR);
-        rgbValues[x][y] = new ColorfulPixel(r, g, b);
+        rgbValues[x][y] = new RgbPixel(r, g, b);
       }
     }
   }
 
-  private void initBinaryValues(ColorfulPixel[][] rgbValues) {
+  private void initBinaryValues(RgbPixel[][] rgbValues) {
     int medium = 0;
     int counter = 0;
 
@@ -91,7 +85,7 @@ public class AnalyzedImage {
 
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
-        ColorfulPixel rgb = rgbValues[x][y];
+        RgbPixel rgb = rgbValues[x][y];
         medium += rgb.getR() + rgb.getG() + rgb.getB();
         counter++;
       }
@@ -100,7 +94,7 @@ public class AnalyzedImage {
 
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
-        ColorfulPixel rgb = rgbValues[x][y];
+        RgbPixel rgb = rgbValues[x][y];
         int gray = rgb.getR() + rgb.getG() + rgb.getB();
         binaryValues[x][y] = gray > medium * 2;
       }
@@ -170,14 +164,6 @@ public class AnalyzedImage {
       System.out.println("Elongation: " + val.getElongation());
     });
   }
-
-  public boolean getPixel(int x, int y) {
-    if (x > width || y > height) {
-      throw new RuntimeException();
-    }
-    return binaryValues[x][y];
-  }
-
 
   //TODO delete
   private void showRgb() {

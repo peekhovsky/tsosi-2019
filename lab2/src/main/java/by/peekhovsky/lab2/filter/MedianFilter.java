@@ -1,12 +1,14 @@
 package by.peekhovsky.lab2.filter;
 
 
-import java.awt.*;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * @author Rastsislau Piakhouski 2019
+ */
 public class MedianFilter implements Filter {
 
   private static final double RED_FACTOR = 0.3;

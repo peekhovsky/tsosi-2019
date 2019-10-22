@@ -4,7 +4,8 @@ import by.peekhovsky.lab2.analyze.AnalyzedImage;
 import by.peekhovsky.lab2.analyze.FigureKMediansAnalyzer;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +14,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class AnalyzedImageDrawer {
+/**
+ * @author Rastsislau Piakhouski 2019
+ */
+public class ImageDrawer {
 
   private static final List<Color> colorList = new ArrayList<>();
 

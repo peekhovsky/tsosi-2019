@@ -2,26 +2,32 @@ package by.peekhovsky.lab2;
 
 import by.peekhovsky.lab2.analyze.AnalyzedImage;
 import by.peekhovsky.lab2.filter.Filter;
+import by.peekhovsky.lab2.filter.GrayFilter;
 import by.peekhovsky.lab2.filter.MedianFilter;
-import by.peekhovsky.lab2.img.AnalyzedImageDrawer;
+import by.peekhovsky.lab2.img.ImageDrawer;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
+
 public class Application {
 
-  private static final String IMG_PATH = "/img_1.jpg";
-  private static final int CLUSTER_NUM = 2;
+  private static final String IMG_PATH = "/img_5.jpg";
+  private static final int CLUSTER_NUM = 4;
 
-
-  public void process() throws IOException {
+  private void process() throws IOException {
     InputStream inputStream = this.getClass().getResourceAsStream(IMG_PATH);
     BufferedImage bufferedImage = ImageIO.read(inputStream);
-    AnalyzedImageDrawer analyzedImageDrawer = new AnalyzedImageDrawer();
+    ImageDrawer drawer = new ImageDrawer();
 
-    //median filter
+    // gray filter
+    Filter grayFilter = new GrayFilter();
+    bufferedImage = grayFilter.filter(bufferedImage);
+    drawer.drawBufferedImage(bufferedImage, "after_gray");
+
+    // median filter
     Filter medianFilter = new MedianFilter();
     bufferedImage = medianFilter.filter(bufferedImage);
     bufferedImage = medianFilter.filter(bufferedImage);
@@ -33,18 +39,18 @@ public class Application {
     bufferedImage = medianFilter.filter(bufferedImage);
     bufferedImage = medianFilter.filter(bufferedImage);
     bufferedImage = medianFilter.filter(bufferedImage);
-    analyzedImageDrawer.drawBufferedImage(bufferedImage, "after_median");
+    drawer.drawBufferedImage(bufferedImage, "after_median");
 
     AnalyzedImage analyzedImage = new AnalyzedImage(bufferedImage);
 
     //binary
-    analyzedImageDrawer.drawBinary(analyzedImage);
+    drawer.drawBinary(analyzedImage);
 
     //diff colors
-    analyzedImageDrawer.drawFiguresInDiffColors(analyzedImage);
+    drawer.drawFiguresInDiffColors(analyzedImage);
 
     //clusters
-    analyzedImageDrawer.drawByClusters(analyzedImage, CLUSTER_NUM);
+    drawer.drawByClusters(analyzedImage, CLUSTER_NUM);
   }
 
   public static void main(String[] args) throws IOException {

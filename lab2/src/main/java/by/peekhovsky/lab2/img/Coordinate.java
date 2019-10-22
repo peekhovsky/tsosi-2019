@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.ToString;
 
 @SuppressWarnings("WeakerAccess")
+/**
+ * @author Rastsislau Piakhouski 2019
+ */
 @Data
 @AllArgsConstructor
 @ToString

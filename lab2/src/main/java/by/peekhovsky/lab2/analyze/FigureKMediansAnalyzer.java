@@ -3,7 +3,13 @@ package by.peekhovsky.lab2.analyze;
 import by.peekhovsky.lab2.img.VectorFigure;
 import by.peekhovsky.lab2.img.VectorFigureImpl;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * @author Rastsislau Piakhouski 2019
