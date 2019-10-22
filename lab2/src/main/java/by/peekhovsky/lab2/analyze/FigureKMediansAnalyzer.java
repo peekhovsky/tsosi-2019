@@ -66,15 +66,16 @@ public class FigureKMediansAnalyzer {
         @SuppressWarnings("unchecked")
         Map.Entry<Integer, VectorFigure> clusterCenterOfMassEntry = values[random.nextInt(values.length)];
         boolean isAppropriate = true;
+        log.info("New random cluster center: {}", clusterCenterOfMassEntry);
 
         if (clusters.get(clusterCenterOfMassEntry.getValue()) != null) {
+          log.info("Already in map. Trying again...");
           continue;
-
         } else {
           for (Map.Entry<VectorFigure, Map<Integer, VectorFigure>> cluster : clusters.entrySet()) {
             log.info("DISTANCE: {}", cluster.getKey().distance(clusterCenterOfMassEntry.getValue()));
             if (cluster.getKey().distance(clusterCenterOfMassEntry.getValue()) < dynamicMinClusterDistance) {
-              log.info("Distance is to small, trying again...");
+              log.info("Distance is to small, trying random again...");
               isAppropriate = false;
             }
           }
@@ -83,11 +84,13 @@ public class FigureKMediansAnalyzer {
         if (!isAppropriate) {
           attemptCounter++;
           if (attemptCounter == clusters.size()) {
+            log.info("Too many attempts, reducing min distance...");
             dynamicMinClusterDistance -= distanceSubtrahend;
             attemptCounter = 0;
           }
           continue;
         }
+        log.info("Done.");
 
         Map<Integer, VectorFigure> newFigures = new HashMap<>();
         newFigures.put(clusterCenterOfMassEntry.getKey(), clusterCenterOfMassEntry.getValue());

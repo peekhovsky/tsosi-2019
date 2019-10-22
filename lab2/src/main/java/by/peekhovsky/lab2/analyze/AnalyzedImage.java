@@ -21,6 +21,13 @@ public class AnalyzedImage {
 
   private static final Logger log = LoggerFactory.getLogger(AnalyzedImage.class);
 
+  /**
+   * Key - number of the figure.
+   * Value - figure object
+   */
+  @Getter
+  private Map<Integer, VectorFigure> figures = new HashMap<>();
+
   @Getter
   private boolean[][] binaryValues;
 
@@ -29,13 +36,6 @@ public class AnalyzedImage {
 
   @Getter
   private RgbPixel[][] rgbValues;
-
-  /**
-   * Key - number of the figure.
-   * Value - figure object
-   */
-  @Getter
-  private Map<Integer, VectorFigure> figures = new HashMap<>();
 
   @Getter
   private final int width;
@@ -63,7 +63,6 @@ public class AnalyzedImage {
 
   private void initRgbValues(BufferedImage bufferedImage) {
     rgbValues = new RgbPixel[width][height];
-
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         int rgb = bufferedImage.getRGB(x, y);
@@ -91,7 +90,7 @@ public class AnalyzedImage {
       for (int x = 0; x < width; x++) {
         RgbPixel rgb = rgbValues[x][y];
         int gray = (rgb.getR() + rgb.getG() + rgb.getB()) / 3;
-        binaryValues[x][y] = gray > medium * 2.15;
+        binaryValues[x][y] = gray > medium * 2.0;
       }
     }
   }

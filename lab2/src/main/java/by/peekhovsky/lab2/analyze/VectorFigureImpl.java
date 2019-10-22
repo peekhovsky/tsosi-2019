@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 @SuppressWarnings("WeakerAccess")
 @ToString
-public class VectorFigureImpl implements VectorFigure {
+public class  VectorFigureImpl implements VectorFigure {
 
   @Getter
   private double square;

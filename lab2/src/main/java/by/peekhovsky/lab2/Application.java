@@ -1,6 +1,8 @@
 package by.peekhovsky.lab2;
 
 import by.peekhovsky.lab2.analyze.AnalyzedImage;
+import by.peekhovsky.lab2.filter.DilationFilter;
+import by.peekhovsky.lab2.filter.ErosionFilter;
 import by.peekhovsky.lab2.filter.Filter;
 import by.peekhovsky.lab2.filter.GrayFilter;
 import by.peekhovsky.lab2.filter.MedianFilter;
@@ -13,10 +15,10 @@ import java.io.InputStream;
 
 public class Application {
 
-  private static final String IMG_PATH = "/img_4.jpg";
-  private static final int CLUSTER_NUM = 5;
-  private static final double MIN_CLUSTER_DISTANCE = 900;
-  private static final double DISTANCE_SUBTRAHEND = 100;
+  private static final String IMG_PATH = "/img_5.jpg";
+  private static final int CLUSTER_NUM = 7;
+  private static final double MIN_CLUSTER_DISTANCE = 1200;
+  private static final double DISTANCE_SUBTRAHEND = 50;
 
 
   private void process() throws IOException {
@@ -39,13 +41,19 @@ public class Application {
     bufferedImage = medianFilter.filter(bufferedImage);
     bufferedImage = medianFilter.filter(bufferedImage);
     bufferedImage = medianFilter.filter(bufferedImage);
-    bufferedImage = medianFilter.filter(bufferedImage);
-    bufferedImage = medianFilter.filter(bufferedImage);
-    bufferedImage = medianFilter.filter(bufferedImage);
-    bufferedImage = medianFilter.filter(bufferedImage);
-    bufferedImage = medianFilter.filter(bufferedImage);
-    bufferedImage = medianFilter.filter(bufferedImage);
-    drawer.drawBufferedImage(bufferedImage, "2_after_median");
+
+    drawer.drawBufferedImage(bufferedImage, "2.1_after_median");
+
+
+    Filter erosionFilter = new ErosionFilter();
+    bufferedImage = erosionFilter.filter(bufferedImage);
+    //bufferedImage = erosionFilter.filter(bufferedImage);
+    drawer.drawBufferedImage(bufferedImage, "2.2_after_erosion");
+
+    Filter dilationFilter = new DilationFilter();
+    bufferedImage = dilationFilter.filter(bufferedImage);
+    bufferedImage = dilationFilter.filter(bufferedImage);
+    drawer.drawBufferedImage(bufferedImage, "2.3_after_dilation");
 
     AnalyzedImage analyzedImage = new AnalyzedImage(bufferedImage);
 
