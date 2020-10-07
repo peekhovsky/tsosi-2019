@@ -14,16 +14,16 @@ import java.util.Objects;
 public class  VectorFigureImpl implements VectorFigure {
 
   @Getter
-  private double square;
+  private final double square;
 
   @Getter
-  private double perimeter;
+  private final double perimeter;
 
   @Getter
-  private double compactness;
+  private final double compactness;
 
   @Getter
-  private double elongation;
+  private final double elongation;
 
   @Getter
   @ToString.Exclude
@@ -163,9 +163,9 @@ public class  VectorFigureImpl implements VectorFigure {
   }
 
   public static class ImageFigureBuilder {
-    private int[][] figureArray;
-    private int width;
-    private int height;
+    private final int[][] figureArray;
+    private final int width;
+    private final int height;
 
     public ImageFigureBuilder(int imgWidth, int imgHeight) {
       this.figureArray = new int[imgWidth][imgHeight];

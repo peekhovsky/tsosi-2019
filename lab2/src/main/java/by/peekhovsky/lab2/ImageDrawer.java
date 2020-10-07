@@ -24,18 +24,18 @@ public class ImageDrawer {
 
   private static final String JPG_EXT = "jpg";
 
-  private static final List<Color> colorList = new ArrayList<>(8);
+  private static final List<Color> colors = new ArrayList<>(8);
 
   static {
-    colorList.add(Color.blue);
-    colorList.add(Color.green);
-    colorList.add(Color.yellow);
-    colorList.add(Color.pink);
-    colorList.add(Color.red);
-    colorList.add(Color.magenta);
-    colorList.add(Color.cyan);
-    colorList.add(Color.lightGray);
-    Collections.shuffle(colorList);
+    colors.add(Color.blue);
+    colors.add(Color.green);
+    colors.add(Color.yellow);
+    colors.add(Color.pink);
+    colors.add(Color.red);
+    colors.add(Color.magenta);
+    colors.add(Color.cyan);
+    colors.add(Color.lightGray);
+    Collections.shuffle(colors);
   }
 
   private int currentColorIndex = 0;
@@ -127,9 +127,9 @@ public class ImageDrawer {
   }
 
   private Color nextColor() {
-    if (currentColorIndex >= colorList.size()) {
+    if (currentColorIndex >= colors.size()) {
       currentColorIndex = 0;
     }
-    return colorList.get(currentColorIndex++);
+    return colors.get(currentColorIndex++);
   }
 }

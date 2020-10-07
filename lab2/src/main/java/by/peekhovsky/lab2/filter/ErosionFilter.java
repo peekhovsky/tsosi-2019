@@ -24,15 +24,32 @@ public class ErosionFilter implements Filter {
       for (int x = 0; x < width; x++) {
         List<Integer> pix = new ArrayList<>(9);
 
-        if (x > 0 && y > 0) pix.add(image.getRGB(x - 1, y - 1));
-        if (x > 0) pix.add(image.getRGB(x - 1, y));
-        if (x > 0 && y < height - 1) pix.add(image.getRGB(x - 1, y + 1));
-        if (y > 0) pix.add(image.getRGB(x, y - 1));
+        if (x > 0 && y > 0) {
+          pix.add(image.getRGB(x - 1, y - 1));
+        }
+        if (x > 0) {
+          pix.add(image.getRGB(x - 1, y));
+        }
+        if (x > 0 && y < height - 1) {
+          pix.add(image.getRGB(x - 1, y + 1));
+        }
+        if (y > 0) {
+          pix.add(image.getRGB(x, y - 1));
+        }
         pix.add(image.getRGB(x, y));
-        if (y < height - 1) pix.add(image.getRGB(x, y + 1));
-        if (x < width - 1 && y > 0) pix.add(image.getRGB(x + 1, y - 1));
-        if (x < width - 1) pix.add(image.getRGB(x + 1, y));
-        if (x < width - 1 && y < height - 1) pix.add(image.getRGB(x + 1, y + 1));
+        if (y < height - 1) {
+          pix.add(image.getRGB(x, y + 1));
+        }
+        if (x < width - 1 && y > 0) {
+          pix.add(image.getRGB(x + 1, y - 1));
+        }
+        if (x < width - 1) {
+          pix.add(image.getRGB(x + 1, y));
+        }
+        if (x < width - 1 && y < height - 1) {
+          pix.add(image.getRGB(x + 1, y + 1));
+        }
+
         pix.sort(Double::compare);
         newImage.setRGB(x, y, pix.get(0));
       }

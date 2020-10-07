@@ -15,9 +15,9 @@ import java.io.InputStream;
 
 public class Application {
 
-  private static final String IMG_PATH = "/img_5.jpg";
-  private static final int CLUSTER_NUM = 7;
-  private static final double MIN_CLUSTER_DISTANCE = 1200;
+  private static final String IMG_PATH = "/img_1.jpg";
+  private static final int CLUSTER_NUM = 3;
+  private static final double MIN_CLUSTER_DISTANCE = 1500;
   private static final double DISTANCE_SUBTRAHEND = 50;
 
 

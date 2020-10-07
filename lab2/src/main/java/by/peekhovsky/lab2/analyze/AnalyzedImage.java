@@ -2,6 +2,9 @@ package by.peekhovsky.lab2.analyze;
 
 import by.peekhovsky.lab2.img.RgbPixel;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,22 +20,21 @@ import static by.peekhovsky.lab2.filter.GrayFilter.RED_FACTOR;
 /**
  * @author Rastsislau Piakhouski 2019
  */
+@Log4j2
 public class AnalyzedImage {
-
-  private static final Logger log = LoggerFactory.getLogger(AnalyzedImage.class);
 
   /**
    * Key - number of the figure.
    * Value - figure object
    */
   @Getter
-  private Map<Integer, VectorFigure> figures = new HashMap<>();
+  private final Map<Integer, VectorFigure> figures = new HashMap<>();
+
+  @Getter
+  private final int[][] labelValues;
 
   @Getter
   private boolean[][] binaryValues;
-
-  @Getter
-  private int[][] labelValues;
 
   @Getter
   private RgbPixel[][] rgbValues;
@@ -57,8 +59,8 @@ public class AnalyzedImage {
     initLabels();
     initFigures();
     //showRgb();
-    showBinary();
-    showLabels();
+    //showBinary();
+    //showLabels();
   }
 
   private void initRgbValues(BufferedImage bufferedImage) {
@@ -161,7 +163,7 @@ public class AnalyzedImage {
     });
   }
 
-  //TODO delete
+  // TODO delete
   private void showRgb() {
     System.out.println();
     log.info("RGB: ");
@@ -178,7 +180,7 @@ public class AnalyzedImage {
     }
   }
 
-  //TODO delete
+  // TODO delete
   private void showBinary() {
     System.out.println();
     log.info("BINARY: ");
