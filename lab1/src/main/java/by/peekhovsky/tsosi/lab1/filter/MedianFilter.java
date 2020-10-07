@@ -1,4 +1,4 @@
-package by.peekhovsky.lab2.filter;
+package by.peekhovsky.tsosi.lab1.filter;
 
 
 import java.awt.Graphics;
@@ -46,6 +46,7 @@ public class MedianFilter implements Filter {
           return Integer.compare(medium1, medium2);
         });
         newImage.setRGB(x, y, pix.get(4));
+
       }
     }
     return newImage;

@@ -1,4 +1,4 @@
-package by.peekhovsky.lab2.filter;
+package by.peekhovsky.tsosi.lab1.filter;
 
 
 import java.awt.Color;
@@ -19,7 +19,7 @@ public class GrayFilter implements Filter {
     int height = image.getHeight();
     int width = image.getWidth();
 
-    BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     Graphics g = newImage.createGraphics();
     g.drawImage(image, 0, 0, null);
 

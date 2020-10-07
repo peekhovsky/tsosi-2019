@@ -12,6 +12,7 @@ import java.util.List;
 public class ErosionFilter implements Filter {
 
   @Override
+  @SuppressWarnings("Duplicates")
   public BufferedImage filter(BufferedImage image) {
     int height = image.getHeight();
     int width = image.getWidth();

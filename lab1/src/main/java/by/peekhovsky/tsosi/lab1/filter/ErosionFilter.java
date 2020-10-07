@@ -1,16 +1,15 @@
-package by.peekhovsky.lab2.filter;
+package by.peekhovsky.tsosi.lab1.filter;
 
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
  * @author Rastsislau Piakhouski 2019
  */
-public class DilationFilter implements Filter {
+public class ErosionFilter implements Filter {
 
   @Override
   @SuppressWarnings("Duplicates")
@@ -25,6 +24,7 @@ public class DilationFilter implements Filter {
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         List<Integer> pix = new ArrayList<>(9);
+
         if (x > 0 && y > 0) {
           pix.add(image.getRGB(x - 1, y - 1));
         }
@@ -52,7 +52,6 @@ public class DilationFilter implements Filter {
         }
 
         pix.sort(Double::compare);
-        Collections.reverse(pix);
         newImage.setRGB(x, y, pix.get(0));
       }
     }
