@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="920.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="by.peekhovsky.tsosi.lab1.UIController">
+    <children>
+        <Pane prefHeight="200.0" prefWidth="200.0">
+            <children>
+                <Button id="openImageButton" fx:id="openImageButton" layoutX="661.0" layoutY="14.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="245.0" text="Open an image..." />
+                <Button id="ProcessButton" layoutX="14.0" layoutY="68.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="158.0" text="Process" />
+                <Button layoutX="14.0" layoutY="116.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="158.0" text="Button" />
+                <BorderPane layoutX="184.0" layoutY="68.0" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black;">
+                    <center>
+                        <ImageView id="image" accessibleText="cdd" fitHeight="575.0" fitWidth="722.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+                    </center>
+                </BorderPane>
+            </children>
+        </Pane>
+    </children>
+</StackPane>
