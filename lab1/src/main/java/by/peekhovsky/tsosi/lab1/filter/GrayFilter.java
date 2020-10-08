@@ -15,7 +15,7 @@ public class GrayFilter implements Filter {
   public static final double BLUE_FACTOR = 0.11;
 
   @Override
-  public BufferedImage filter(BufferedImage image) {
+  public BufferedImage filter(BufferedImage image, Integer value) {
     int height = image.getHeight();
     int width = image.getWidth();
 

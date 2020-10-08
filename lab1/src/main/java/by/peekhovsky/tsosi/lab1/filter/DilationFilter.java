@@ -15,7 +15,7 @@ public class DilationFilter implements Filter {
 
   @Override
   @SuppressWarnings("Duplicates")
-  public BufferedImage filter(BufferedImage image) {
+  public BufferedImage filter(BufferedImage image, Integer value) {
     int height = image.getHeight();
     int width = image.getWidth();
 

@@ -6,6 +6,9 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
+
+import by.peekhovsky.tsosi.lab1.util.ImageUtils;
 
 /**
  * @author Rastsislau Piakhouski 2019
@@ -17,7 +20,7 @@ public class ImpulseMedianFilter implements Filter {
   private static final double BLUE_FACTOR = 0.11;
 
   @Override
-  public BufferedImage filter(BufferedImage image) {
+  public BufferedImage filter(BufferedImage image, Integer value) {
     int height = image.getHeight();
     int width = image.getWidth();
 
@@ -25,8 +28,8 @@ public class ImpulseMedianFilter implements Filter {
     Graphics g = newImage.createGraphics();
     g.drawImage(image, 0, 0, null);
 
-    for (int y = 1; y < height - 1; y+=10) {
-      for (int x = 1; x < width - 1; x+=10) {
+    for (int y = 1; y < height - 1; y+=3) {
+      for (int x = 1; x < width - 1; x+=3) {
         List<Integer> pix = new ArrayList<>(9);
         pix.add(image.getRGB(x - 1, y - 1));
         pix.add(image.getRGB(x - 1, y));
@@ -51,7 +54,9 @@ public class ImpulseMedianFilter implements Filter {
         });
 
         if (pix.get(8).equals(impulsePixel)) {
-          newImage.setRGB(x, y, Color.WHITE.getRGB());
+          if (ImageUtils.getRandom().nextInt(10) == 1) {
+            newImage.setRGB(x, y, Color.WHITE.getRGB());
+          }
         } else {
           //newImage.setRGB(x, y, pix.get(4));
         }

@@ -25,6 +25,7 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -50,6 +51,9 @@ public class UIController implements Initializable {
 
   @FXML
   private ImageView imageView;
+
+  @FXML
+  private TextField medianMaskTextField;
 
   @FXML
   private Label infoLabel;
@@ -79,7 +83,7 @@ public class UIController implements Initializable {
   void handleToNegative() {
     if (image != null) {
       Filter filter = new NegativeFilter();
-      BufferedImage newImage = filter.filter(image);
+      BufferedImage newImage = filter.filter(image, null);
       setImage(newImage);
     }
   }
@@ -89,9 +93,17 @@ public class UIController implements Initializable {
     if (image == null) {
       return;
     }
-    Filter filter = new MedianFilter();
-    BufferedImage newImage = filter.filter(image);
-    setImage(newImage);
+
+    int maskSize = 3;
+    try {
+      maskSize = Integer.parseInt(medianMaskTextField.getText());
+    } catch (NumberFormatException e) {
+      medianMaskTextField.setText(Integer.toString(maskSize));
+    } finally {
+      Filter filter = new MedianFilter();
+      BufferedImage newImage = filter.filter(image, maskSize);
+      setImage(newImage);
+    }
   }
 
   @FXML
@@ -100,7 +112,7 @@ public class UIController implements Initializable {
       return;
     }
     Filter filter = new HarmonicMeanFilter();
-    BufferedImage newImage = filter.filter(image);
+    BufferedImage newImage = filter.filter(image, null);
     setImage(newImage);
   }
 
@@ -110,7 +122,7 @@ public class UIController implements Initializable {
       return;
     }
     Filter filter = new ImpulseMedianFilter();
-    BufferedImage newImage = filter.filter(image);
+    BufferedImage newImage = filter.filter(image, null);
     setImage(newImage);
   }
 

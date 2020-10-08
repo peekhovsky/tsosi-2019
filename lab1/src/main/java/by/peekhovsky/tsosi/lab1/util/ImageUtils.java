@@ -2,6 +2,7 @@ package by.peekhovsky.tsosi.lab1.util;
 
 
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -9,6 +10,8 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
 public class ImageUtils {
+  private static final Random random = new Random();
+
   public static Image convertToFXImage(BufferedImage image) {
     WritableImage wr = null;
     if (image != null) {
@@ -21,5 +24,9 @@ public class ImageUtils {
       }
     }
     return new ImageView(wr).getImage();
+  }
+
+  public static Random getRandom() {
+    return random;
   }
 }

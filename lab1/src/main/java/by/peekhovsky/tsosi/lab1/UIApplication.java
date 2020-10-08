@@ -24,6 +24,7 @@ public class UIApplication extends Application {
 
     stage.setTitle("TSOSI Lab1");
     stage.setScene(scene);
+    stage.setResizable(false);
     stage.show();
   }
 

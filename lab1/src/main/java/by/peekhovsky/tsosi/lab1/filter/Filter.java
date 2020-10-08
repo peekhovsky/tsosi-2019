@@ -4,5 +4,5 @@ import java.awt.image.BufferedImage;
 
 @FunctionalInterface
 public interface Filter {
-  BufferedImage filter(BufferedImage image);
+  BufferedImage filter(BufferedImage image, Integer value);
 }
