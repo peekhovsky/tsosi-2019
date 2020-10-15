@@ -54,7 +54,7 @@ public class ImpulseMedianFilter implements Filter {
         });
 
         if (pix.get(8).equals(impulsePixel)) {
-          if (ImageUtils.getRandom().nextInt(10) == 1) {
+          if (ImageUtils.getRandom().nextInt(5) == 1) {
             newImage.setRGB(x, y, Color.WHITE.getRGB());
           }
         } else {

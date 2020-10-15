@@ -11,11 +11,7 @@ import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 
-import by.peekhovsky.tsosi.lab1.filter.Filter;
-import by.peekhovsky.tsosi.lab1.filter.HarmonicMeanFilter;
-import by.peekhovsky.tsosi.lab1.filter.ImpulseMedianFilter;
-import by.peekhovsky.tsosi.lab1.filter.MedianFilter;
-import by.peekhovsky.tsosi.lab1.filter.NegativeFilter;
+import by.peekhovsky.tsosi.lab1.filter.*;
 import by.peekhovsky.tsosi.lab1.util.ImageUtils;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -48,6 +44,9 @@ public class UIController implements Initializable {
 
   @FXML
   private Button toImpulseMedianButton;
+
+  @FXML
+  private Button toMaxButton;
 
   @FXML
   private ImageView imageView;
@@ -96,7 +95,9 @@ public class UIController implements Initializable {
 
     int maskSize = 3;
     try {
+      System.out.println(medianMaskTextField.getText());
       maskSize = Integer.parseInt(medianMaskTextField.getText());
+      System.out.println(maskSize);
     } catch (NumberFormatException e) {
       medianMaskTextField.setText(Integer.toString(maskSize));
     } finally {
@@ -126,6 +127,15 @@ public class UIController implements Initializable {
     setImage(newImage);
   }
 
+  @FXML
+  void handleToMax() {
+    if (image == null) {
+      return;
+    }
+    Filter filter = new MaxFilter();
+    BufferedImage newImage = filter.filter(image, null);
+    setImage(newImage);
+  }
 
   private void drawHistogram() {
     histogramChart.getData().clear();
@@ -196,5 +206,6 @@ public class UIController implements Initializable {
     toMedianButton.setDisable(false);
     toHarmonicMeanButton.setDisable(false);
     toImpulseMedianButton.setDisable(false);
+    toMaxButton.setDisable(false);
   }
 }
