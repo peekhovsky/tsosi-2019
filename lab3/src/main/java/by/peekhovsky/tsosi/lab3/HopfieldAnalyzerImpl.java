@@ -10,52 +10,39 @@ public class HopfieldAnalyzerImpl implements HopfieldAnalyzer {
 
   private final int size;
   private final Neuron[] neurons;
-  private final int[] lastOutputValues;
   private final int[][] weightMatrix;
   private final Random random = new Random();
 
   public HopfieldAnalyzerImpl(List<Integer[]> letters, int size) {
     this.size = size;
     neurons = new Neuron[size];
-    lastOutputValues = new int[size];
+
     weightMatrix = new int[size][size];
 
-    for (int i = 0; i < neurons.length; i++) {
+    for (var i = 0; i < neurons.length; i++) {
       neurons[i] = new Neuron(i);
     }
 
-    letters.forEach(value -> initCoefficients(value));
-  }
-
-
-  private void initCoefficients(Integer[] img) {
-    for (int i = 0; i < img.length; i++) {
-      for (int j = 0; j < img.length; j++) {
-        if (i == j) {
-          weightMatrix[i][j] = 0;
-        } else {
-          weightMatrix[i][j] += img[i] * img[j];
-        }
-      }
-    }
+    letters.forEach(this::initCoefficients);
   }
 
   public Integer[] findImage(Integer[] img) {
-    int times = 10000;
-    boolean isImageRecognized = true;
-    Integer[] recognizedImage = img.clone();
+    var times = 10000;
+    var isImageRecognized = true;
+    var recognizedImage = img.clone();
+    var lastOutputValues = new int[size];
 
     while (!isImageRecognized || times-- > 0) {
-      //заносим входящие значения
-      for (int i = 0; i < recognizedImage.length; i++) {
+      //  insert input values
+      for (var i = 0; i < recognizedImage.length; i++) {
         neurons[i].setX(recognizedImage[i]);
         lastOutputValues[i] = neurons[i].getY();
       }
 
-      //сначало вычисляем S потом У
-      for (int i = 0; i < recognizedImage.length; i++) {
-        int newState = 0;
-        for (int j = 0; j < this.size; j++) {
+      //  calculate S and V
+      for (var i = 0; i < recognizedImage.length; i++) {
+        var newState = 0;
+        for (var j = 0; j < this.size; j++) {
           newState += weightMatrix[neurons[i].getIndex()][j] * neurons[j].getX();
         }
         neurons[i].setState(newState);
@@ -63,15 +50,15 @@ public class HopfieldAnalyzerImpl implements HopfieldAnalyzer {
       }
       isImageRecognized = true;
 
-      //проверяем на равенство входного и выходного векторов
-      for (int i = 0; i < lastOutputValues.length; i++) {
+      //  is equal
+      for (var i = 0; i < lastOutputValues.length; i++) {
         if (lastOutputValues[i] != neurons[i].getY()) {
           isImageRecognized = false;
           break;
         }
       }
 
-      for (int i = 0; i < recognizedImage.length; i++) {
+      for (var i = 0; i < recognizedImage.length; i++) {
         recognizedImage[i] = neurons[i].getY();
       }
     }
@@ -80,12 +67,12 @@ public class HopfieldAnalyzerImpl implements HopfieldAnalyzer {
   }
 
   public Integer[] crashImage(Integer[] img, int percentage) {
-    List<Integer> indexes = generateIndexList(img.length);
     Set<Integer> indexesForChange = new HashSet<>();
-    Integer[] crashedImage = img.clone();
+    var crashedImage = img.clone();
+    var indexes = generateIndexList(img.length);
 
-    int pixIndex = (img.length * percentage) / 100;
-    for (int i = 0; i < pixIndex; i++) {
+    var pixIndex = (img.length * percentage) / 100;
+    for (var i = 0; i < pixIndex; i++) {
       int randomIndex = random.nextInt(indexes.size());
       indexesForChange.add(indexes.get(randomIndex));
       indexes.remove(randomIndex);
@@ -95,9 +82,36 @@ public class HopfieldAnalyzerImpl implements HopfieldAnalyzer {
     return crashedImage;
   }
 
+  private void initCoefficients(Integer[] img) {
+    for (var i = 0; i < img.length; i++) {
+      for (var j = 0; j < img.length; j++) {
+        if (i == j) {
+          weightMatrix[i][j] = 0;
+        } else {
+          weightMatrix[i][j] += img[i] * img[j];
+        }
+      }
+    }
+    showMatrix(weightMatrix);
+  }
+
+  private void showMatrix(int[][] matrix) {
+    System.out.println("MATRIX");
+    for (var i = 0; i < matrix.length; i++) {
+      System.out.println();
+      for (var j = 0; j < matrix.length; j++) {
+        if (matrix[i][j] == -1) {
+          System.out.print(matrix[i][j] + " ");
+        } else {
+          System.out.print(" " + matrix[i][j] + " ");
+        }
+      }
+    }
+  }
+
   private List<Integer> generateIndexList(int length) {
     List<Integer> indexes = new ArrayList<>();
-    for (int i = 0; i < length; i++) {
+    for (var i = 0; i < length; i++) {
       indexes.add(i);
     }
     return indexes;

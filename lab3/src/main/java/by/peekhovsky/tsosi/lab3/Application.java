@@ -1,7 +1,6 @@
 package by.peekhovsky.tsosi.lab3;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class Application {
@@ -11,22 +10,33 @@ public class Application {
   }
 
   private static void runAnalyzer() {
-    List<Letters> letters = Arrays.stream(Letters.values()).collect(Collectors.toList());
-    HopfieldAnalyzer hopfield = new HopfieldAnalyzerImpl(
+    var letters = Arrays.stream(Letters.values()).collect(Collectors.toList());
+    var hopfield = new HopfieldAnalyzerImpl(
       letters.stream().map(Letters::getLetters).collect(Collectors.toList()),
       100);
 
-    letters.forEach(value -> {
-      Integer[] crashedImage;
-      System.out.println("\n\n" + value);
-      for (int i = 10; i <= 100; i += 10) {
-        System.out.println("\n" + i + "%");
-        crashedImage = hopfield.crashImage(value.getLetters(), i);
-        showLetters(crashedImage);
-        System.out.println();
-        showLetters(hopfield.findImage(crashedImage));
-      }
-    });
+//    letters.forEach(value -> {
+//      Integer[] crashedImage;
+//      System.out.println("\n\n" + value);
+//      for (int i = 10; i <= 100; i += 10) {
+//        System.out.println("\n" + i + "%");
+//        crashedImage = hopfield.crashImage(value.getLetters(), i);
+//        showLetters(crashedImage);
+//        System.out.println();
+//        showLetters(hopfield.findImage(crashedImage));
+//      }
+//    });
+
+    var value = letters.get(0);
+    Integer[] crashedImage;
+    System.out.println("\n\n" + value);
+    for (var i = 10; i <= 100; i += 10) {
+      System.out.println("\n" + i + "%");
+      crashedImage = hopfield.crashImage(value.getLetters(), i);
+      showLetters(crashedImage);
+      System.out.println();
+      showLetters(hopfield.findImage(crashedImage));
+    }
   }
 
   private static void showLetters(Integer[] letter) {
